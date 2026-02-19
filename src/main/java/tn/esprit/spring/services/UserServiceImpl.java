@@ -1,12 +1,10 @@
 package tn.esprit.spring.services;
 
 import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import tn.esprit.spring.entities.User;
 import tn.esprit.spring.repository.UserRepository;
 
@@ -16,80 +14,58 @@ public class UserServiceImpl implements IUserService {
 	@Autowired
 	UserRepository userRepository;
 
-
-
 	private static final Logger l = LogManager.getLogger(UserServiceImpl.class);
 
 	@Override
-	public List<User> retrieveAllUsers() { 
-
-		return null;
+	public List<User> retrieveAllUsers() {
+		return userRepository.findAll();
 	}
-
 
 	@Override
 	public User addUser(User u) {
-
-		User utilisateur = null; 
-
+		User utilisateur = null;
 		try {
-			// TODO Log à ajouter en début de la méthode 
-			utilisateur = userRepository.save(u); 
-			// TODO Log à ajouter à la fin de la méthode 
-
+			l.info("Adding user: " + u);
+			utilisateur = userRepository.save(u);
+			l.info("User added successfully: " + utilisateur);
 		} catch (Exception e) {
-			// TODO log ici : l....("error in addUser() : " + e);
+			l.error("error in addUser() : " + e);
 		}
-
-		return utilisateur; 
+		return utilisateur;
 	}
 
-	@Override 
+	@Override
 	public User updateUser(User u) {
-
-		User userUpdated = null; 
-		User u_saved = null; 
-
-		
+		User userUpdated = null;
 		try {
-			// TODO Log à ajouter en début de la méthode 
-			userUpdated = userRepository.save(u); 
-			// TODO Log à ajouter à la fin de la méthode 
-
+			l.info("Updating user: " + u);
+			userUpdated = userRepository.save(u);
+			l.info("User updated successfully: " + userUpdated);
 		} catch (Exception e) {
-			// TODO log ici : l....("error in updateUser() : " + e);
+			l.error("error in updateUser() : " + e);
 		}
-
-		return userUpdated; 
+		return userUpdated;
 	}
 
 	@Override
 	public void deleteUser(String id) {
-
 		try {
-			// TODO Log à ajouter en début de la méthode 
-			userRepository.deleteById(Long.parseLong(id)); 
-			// TODO Log à ajouter à la fin de la méthode 
-
+			l.info("Deleting user with id: " + id);
+			userRepository.deleteById(Long.parseLong(id));
+			l.info("User deleted successfully with id: " + id);
 		} catch (Exception e) {
-			// TODO log ici : l....("error in deleteUser() : " + e);
+			l.error("error in deleteUser() : " + e);
 		}
-
 	}
 
 	@Override
 	public User retrieveUser(String id) {
 		User u = null;
 		try {
-			u =  userRepository.findById(Long.parseLong(id)).get();
-
+			u = userRepository.findById(Long.parseLong(id)).get();
 		} catch (Exception e) {
+			l.error("error in retrieveUser() : " + e);
 		}
-
 		return u;
 	}
-
-	
-	
-	
 }
